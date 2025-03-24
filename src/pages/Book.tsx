@@ -16,7 +16,7 @@ const bookingSchema = z.object({
     required_error: 'Please select a service',
   }),
   style: z.string().min(1, 'Please select a style'),
-  date: z.date({
+  date: z.string({
     required_error: 'Please select a date',
   }),
   time: z.string().min(1, 'Please select a time'),
@@ -37,7 +37,12 @@ const serviceStyles = {
 };
 
 // Mock API function (replace with actual API call in production)
-const bookAppointment = async (data: BookingFormData) => {
+type BookingResponse = {
+  success: boolean;
+  bookingId: string;
+};
+
+const bookAppointment = async (data: BookingFormData): Promise<BookingResponse> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({ success: true, bookingId: `BOOK${Math.random().toString(36).substr(2, 9)}` });
@@ -61,7 +66,7 @@ export function Book() {
   });
 
   const selectedService = watch('service');
-  const selectedDate = watch('date');
+  const selectedDate = watch('date') ? new Date(watch('date')) : null;
 
   const onSubmit = async (data: BookingFormData) => {
     try {
@@ -208,8 +213,8 @@ export function Book() {
               <div>
                 <label className="block text-sm font-medium text-amber-800 mb-1">Date</label>
                 <DatePicker
-                  selected={selectedDate}
-                  onChange={(date) => setValue('date', date as Date)}
+                  selected={selectedDate as Date}
+                  onChange={(date) => setValue('date', format(date as Date, 'yyyy-MM-dd'))}
                   minDate={new Date()}
                   disabled={isSubmitting}
                   className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-amber-800 disabled:opacity-50"

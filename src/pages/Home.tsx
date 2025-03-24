@@ -19,7 +19,7 @@ import {
 import HeroSectionImage from '../assets/images/herosection1.jpg';
 
 
-const FadeInSection = ({ children }) => {
+const FadeInSection: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -149,7 +149,7 @@ export function Home() {
   const filteredGallery =
     selectedCategory === 'All' ? gallery : gallery.filter((item) => item.category === selectedCategory);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
   };
