@@ -5,10 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { ChevronRight, Star } from 'lucide-react';
 
 
-
-import { ReactNode } from 'react';
-
-const FadeInSection = ({ children }: { children: ReactNode }) => {
+const FadeInSection = ({ children }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,

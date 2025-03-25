@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
-import Logo from '../assets/images/drapinghublogo.png';
 import {
   Heart,
   Scissors,
@@ -16,10 +15,8 @@ import {
   Award,
   Instagram,
 } from 'lucide-react';
-import HeroSectionImage from '../assets/images/herosection1.jpg';
 
-
-const FadeInSection: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const FadeInSection = ({ children }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -43,7 +40,7 @@ const services = [
     icon: <Scissors className="w-8 h-8 text-amber-500" />,
     description:
       'Professional saree pre-pleating service for hassle-free draping. Perfect for brides and special occasions.',
-    image: 'https://res.cloudinary.com/dxu9qrwzm/image/upload/v1742800412/zrb5yischqscqjznasfs.jpg', // Updated to use the imported image
+    image: 'https://res.cloudinary.com/dxu9qrwzm/image/upload/v1742800412/zrb5yischqscqjznasfs.jpg',
     link: '/services/saree-pre-plating',
   },
   {
@@ -113,7 +110,7 @@ const gallery = [
   {
     title: 'Designer Aari',
     category: 'Aari',
-    image: "https://res.cloudinary.com/dxu9qrwzm/image/upload/v1742806250/uskdxvy2ymkztvc4awsk.jpg",
+    image: 'https://res.cloudinary.com/dxu9qrwzm/image/upload/v1742806250/uskdxvy2ymkztvc4awsk.jpg',
   },
 ];
 
@@ -149,7 +146,7 @@ export function Home() {
   const filteredGallery =
     selectedCategory === 'All' ? gallery : gallery.filter((item) => item.category === selectedCategory);
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
   };
@@ -164,7 +161,11 @@ export function Home() {
           animate={{ scale: 1.05 }}
           transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
         >
-          <img src={HeroSectionImage} alt="Hero Background" className="w-full h-full object-cover" />
+          <img
+            src="https://res.cloudinary.com/dxu9qrwzm/image/upload/v1742807378/oh01g0n9jf3jj8281tux.jpg"
+            alt="Hero Background"
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50"></div>
         </motion.div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
@@ -227,7 +228,9 @@ export function Home() {
                   About <span className="text-amber-600">Draping Hub</span>
                 </h2>
                 <p className="text-lg text-amber-800">
-                  At Draping Hub, we blend traditional craftsmanship with modern convenience. Our expert team specializes in creating memorable experiences through our premium saree pre-plating, intricate mehandi designs, and exquisite aari work.
+                  At Draping Hub, we blend traditional craftsmanship with modern convenience. Our expert team
+                  specializes in creating memorable experiences through our premium saree pre-plating, intricate mehandi
+                  designs, and exquisite aari work.
                 </p>
                 <motion.button
                   whileHover={{ scale: 1.05, boxShadow: '0 0 10px rgba(251, 191, 36, 0.3)' }}
@@ -244,59 +247,62 @@ export function Home() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.5 }}
               >
-                <img src={Logo} alt="About Us" className="w-full h-[400px] object-cover" />
+                <img
+                  src="https://res.cloudinary.com/dxu9qrwzm/image/upload/v1742800273/bj0uiqmvnktgg5jwkvdp.png"
+                  alt="About Us"
+                  className="w-full h-[400px] object-cover"
+                />
               </motion.div>
             </FadeInSection>
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
       <section id="services" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeInSection>
-            <h2 className="text-4xl font-serif font-bold text-center mb-12 text-amber-900">
-              Our <span className="text-amber-600">Services</span>
-            </h2>
-          </FadeInSection>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <FadeInSection key={index}>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <FadeInSection>
+      <h2 className="text-4xl font-serif font-bold text-center mb-12 text-amber-900">
+        Our <span className="text-amber-600">Services</span>
+      </h2>
+    </FadeInSection>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      {services.map((service, index) => (
+        <FadeInSection key={index}>
+          <motion.div
+            whileHover={{ y: -10, boxShadow: '0 10px 20px rgba(0, 0, 0, 0.1)' }}
+            className="bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300"
+          >
+            <div className="relative h-48">
+              <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
+              <motion.div
+                className="absolute inset-0 bg-black/30 flex items-center justify-center"
+                whileHover={{ backgroundColor: 'rgba(251, 191, 36, 0.2)' }}
+              >
                 <motion.div
-                  whileHover={{ y: -10, boxShadow: '0 10px 20px rgba(0, 0, 0, 0.1)' }}
-                  className="bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300"
+                  whileHover={{ scale: 1.2, rotate: 360 }}
+                  transition={{ duration: 0.5 }}
+                  className="bg-white p-3 rounded-full"
                 >
-                  <div className="relative h-48">
-                    <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
-                    <motion.div
-                      className="absolute inset-0 bg-black/30 flex items-center justify-center"
-                      whileHover={{ backgroundColor: 'rgba(251, 191, 36, 0.2)' }}
-                    >
-                      <motion.div
-                        whileHover={{ scale: 1.2, rotate: 360 }}
-                        transition={{ duration: 0.5 }}
-                        className="bg-white p-3 rounded-full"
-                      >
-                        {service.icon}
-                      </motion.div>
-                    </motion.div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-3 text-amber-900">{service.title}</h3>
-                    <p className="text-amber-800 mb-4">{service.description}</p>
-                    <Link
-                      to={service.link}
-                      className="text-amber-600 font-semibold hover:text-amber-700 transition-colors"
-                    >
-                      View Details →
-                    </Link>
-                  </div>
+                  {service.icon}
                 </motion.div>
-              </FadeInSection>
-            ))}
-          </div>
-        </div>
-      </section>
+              </motion.div>
+            </div>
+            <div className="p-6">
+              <h3 className="text-xl font-semibold mb-3 text-amber-900">{service.title}</h3>
+              <p className="text-amber-800 mb-4">{service.description}</p>
+              <Link
+                to={service.link}
+                className="text-amber-600 font-semibold hover:text-amber-700 transition-colors"
+              >
+                View Details →
+              </Link>
+            </div>
+          </motion.div>
+        </FadeInSection>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Why Choose Us Section */}
       <section className="py-20 bg-amber-50">

@@ -37,12 +37,7 @@ const serviceStyles = {
 };
 
 // Mock API function (replace with actual API call in production)
-type BookingResponse = {
-  success: boolean;
-  bookingId: string;
-};
-
-const bookAppointment = async (data: BookingFormData): Promise<BookingResponse> => {
+const bookAppointment = async (data: BookingFormData) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({ success: true, bookingId: `BOOK${Math.random().toString(36).substr(2, 9)}` });
@@ -66,7 +61,7 @@ export function Book() {
   });
 
   const selectedService = watch('service');
-  const selectedDate = watch('date') ? new Date(watch('date')) : null;
+  const selectedDate = watch('date');
 
   const onSubmit = async (data: BookingFormData) => {
     try {
@@ -213,7 +208,7 @@ export function Book() {
               <div>
                 <label className="block text-sm font-medium text-amber-800 mb-1">Date</label>
                 <DatePicker
-                  selected={selectedDate as Date}
+                  selected={selectedDate}
                   onChange={(date) => setValue('date', format(date as Date, 'yyyy-MM-dd'))}
                   minDate={new Date()}
                   disabled={isSubmitting}

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { ChevronRight, Star } from 'lucide-react';
 
-const FadeInSection: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const FadeInSection = ({ children }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
