@@ -36,14 +36,27 @@ const serviceStyles = {
   aari: ['Bridal Aari Work', 'Traditional Design', 'Contemporary Style'],
 };
 
-// Mock API function (replace with actual API call in production)
-const bookAppointment = async (data: BookingFormData) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true, bookingId: `BOOK${Math.random().toString(36).substr(2, 9)}` });
-    }, 1000);
+// API call to backend
+async function bookAppointment(data: BookingFormData) {
+  const formattedData = {
+    ...data,
+    date: format(new Date(data.date), 'yyyy-MM-dd'),
+  };
+
+  const response = await fetch('http://localhost:5000/api/book-appointment', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formattedData),
   });
-};
+
+  if (!response.ok) {
+    throw new Error('Failed to book appointment');
+  }
+
+  return await response.json();
+}
 
 export function Book() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,17 +81,12 @@ export function Book() {
       setIsSubmitting(true);
       setBookingStatus('idle');
       
-      const formattedData = {
-        ...data,
-        date: format(data.date, 'yyyy-MM-dd'),
-      };
-
-      const response = await bookAppointment(formattedData);
+      const response = await bookAppointment(data);
       
       if (response.success) {
         setBookingStatus('success');
-        reset(); // Reset form after successful submission
-        setTimeout(() => setBookingStatus('idle'), 5000); // Reset status after 5 seconds
+        reset();
+        setTimeout(() => setBookingStatus('idle'), 5000);
       }
     } catch (error) {
       setBookingStatus('error');
@@ -101,7 +109,6 @@ export function Book() {
             Book Your <span className="text-amber-600">Service</span>
           </h1>
 
-          {/* Booking Status Messages */}
           {bookingStatus === 'success' && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -122,7 +129,6 @@ export function Book() {
           )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {/* Personal Information */}
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold text-amber-900">Personal Information</h2>
               <div>
@@ -157,7 +163,6 @@ export function Book() {
               </div>
             </div>
 
-            {/* Service Selection */}
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold text-amber-900">Service Details</h2>
               <div>
@@ -202,13 +207,12 @@ export function Book() {
               )}
             </div>
 
-            {/* Appointment Details */}
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold text-amber-900">Appointment Details</h2>
               <div>
                 <label className="block text-sm font-medium text-amber-800 mb-1">Date</label>
                 <DatePicker
-                  selected={selectedDate}
+                  selected={selectedDate ? new Date(selectedDate) : null}
                   onChange={(date) => setValue('date', format(date as Date, 'yyyy-MM-dd'))}
                   minDate={new Date()}
                   disabled={isSubmitting}
@@ -235,7 +239,6 @@ export function Book() {
               </div>
             </div>
 
-            {/* Additional Information */}
             <div>
               <label className="block text-sm font-medium text-amber-800 mb-1">
                 Additional Notes (Optional)
@@ -249,7 +252,6 @@ export function Book() {
               />
             </div>
 
-            {/* Submit Button */}
             <motion.button
               whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
               whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
